@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  jsonservice:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:80"
+      - "5001:443"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80;https://+:443
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=password
+    volumes:
+      - ${USERPROFILE}\.aspnet\https:/https:ro
+    networks:
+      - jsonservice-network
+
+networks:
+  jsonservice-network:
+    driver: bridge
